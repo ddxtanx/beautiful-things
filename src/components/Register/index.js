@@ -1,9 +1,12 @@
 import React from 'react';
 import axios from 'axios';
-import './style.css';
-
+import Presenter from './Presenter';
+import autoBind from 'react-autobind';
 class Register extends React.Component {
-    state = {email: "", name:"", pass1:"", pass2:"", type:"", text:""};
+    constructor(){
+        super();
+        this.state = {email: "", name:"", pass1:"", pass2:"", type:"", text:""};
+    }
     handleSubmit(){
         var self = this;
         if(this.state.email.indexOf('@')===-1 || this.state.email.indexOf(".")===-1){
@@ -17,7 +20,7 @@ class Register extends React.Component {
             return;
         }
         this.setState({type: "", text:""});
-        axios.post("/register",{
+        axios.post("register",{
             email: this.state.email,
             name: this.state.name,
             pass: this.state.pass1
@@ -39,30 +42,7 @@ class Register extends React.Component {
         }
     }
     render(){
-        var alertType = "alert "+this.state.type;
-        return (
-            <div id="main-content">
-                <div className={alertType}>
-                    {this.state.text}
-                </div>
-                <div id="regForm">
-                    <p id="regTitle"> Register Here: </p>
-                    <label htmlFor="email">Email:</label>
-                    <input type="email" name="email" placeholder="Email Here:" onChange={this.handleChange.bind(this)} onKeyPress={this.handleKeyPress.bind(this)}/>
-                    <br/>
-                    <label htmlFor="name">Name:</label>
-                    <input type="text" name="name" placeholder="Name Here:" onChange={this.handleChange.bind(this)} onKeyPress={this.handleKeyPress.bind(this)}/>
-                    <br/>
-                    <label htmlFor="pass1">Password:</label>
-                    <input type="password" name="pass1" placeholder="Password Here:" onChange={this.handleChange.bind(this)} onKeyPress={this.handleKeyPress.bind(this)}/>
-                    <br/>
-                    <label htmlFor="pass2">Password Again:</label>
-                    <input type="password" name="pass2" placeholder="Password Again:" onChange={this.handleChange.bind(this)} onKeyPress={this.handleKeyPress.bind(this)}/>
-                    <br/>
-                    <input type="button" name="submit" value="Submit!" className="btn btn-success" id="regBtn" onClick={this.handleSubmit.bind(this)}/>
-                </div>
-            </div>
-            );
+        return <Presenter type={this.state.type} text={this.state.text} handleChange={this.handleChange} handleKeyPress={this.handleKeyPress} handleSubmit={this.handleSubmit}/>
     }
 }
 export default Register;

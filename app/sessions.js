@@ -1,4 +1,4 @@
-var sessions = {};
+let sessions = {};
 function getSession(req, res){
     var id = req.body.id;
     res.writeHead(200, {'Content-Type': 'text/json'});
@@ -15,12 +15,20 @@ function setSession(req, res){
 }
 function destroy(req, res){
     var id = req.query.id;
-    console.log(req);
     sessions[id] = {loggedin: false, loginData:{name: "", id: 0, email:""}};
     res.redirect("/");
+}
+function getSessionData(id){
+    if(sessions[id]!==undefined){
+        return sessions[id];
+    } else{
+        throw `No session with id ${id}`;
+    }
 }
 module.exports = {
     getSession: getSession,
     setSession: setSession,
-    destroy: destroy
+    destroy: destroy,
+    sessions: sessions,
+    getSessionData
 }

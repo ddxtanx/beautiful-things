@@ -1,5 +1,4 @@
 const User = require('./Models/User');
-var sessions = {};
 function register(req, res){
     res.writeHead(200, {'Content-Type': 'text/json'});
     console.log("in register");
@@ -31,7 +30,7 @@ function register(req, res){
             };
             console.log(userData);
             var user = new User(userData);
-            user.save(function(err, data){
+            user.save(function(err){
                 if(err) throw err;
                 userData.type = "alert-success";
                 userData.text = "Registration complete! Now log in!";
@@ -62,7 +61,6 @@ function login(req, res){
             }
             res.write(JSON.stringify(resData));
             res.end();
-            return
         } else{
             var user = users[0];
             resData = {

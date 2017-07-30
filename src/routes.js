@@ -6,8 +6,9 @@ import App from './components/App';
 import NotFound from './components/404';
 import Login from './components/Login';
 import Register from './components/Register';
-import Session from './components/Session';
-
+import Session from './Session';
+import Posts from './components/Posts';
+import NotLoggedIn from './components/NotLoggedIn';
 const cookies = new Cookies();
 class Routes extends React.Component {
   constructor(props){
@@ -21,10 +22,10 @@ class Routes extends React.Component {
     this.componentWillMount = this.componentWillMount.bind(this);
     this.updateSession = this.updateSession.bind(this);
   }
-  updateSession(){
+  updateSession(alertData){
     var self = this;
-    Session.getSession(cookies.get('id'), (data) => {
-      self.setState(data);
+    Session.getSession(cookies.get('id'), (sessionData) => {
+      self.setState(Object.assign({}, alertData, sessionData));
     });
   }
   componentWillMount(){
@@ -42,6 +43,13 @@ class Routes extends React.Component {
             <Route path="/" exact component={()=><App/>}/>
             <Route path="/login" component={()=><Login cookies={cookies} updateSession={this.updateSession}/>}/>
             <Route path="/register" component={()=><Register/>}/>
+            <Route path="/posts" component={()=>{
+              if(this.state.loggedin){
+                return <Posts cookies={cookies} loginData={this.state.loginData}/>;
+              } else{
+                return <NotLoggedIn/>;
+              }
+            }}/>
             <Route component={()=><NotFound/>} />
         </Switch>
       </Router>
