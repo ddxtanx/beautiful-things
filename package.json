@@ -27,7 +27,7 @@
     "build": "webpack --progress --cache --profile",
     "create": "npm run build && node server/",
     "test": "echo 'No tests defined'",
-    "server": "node server/",
+    "start": "node server/",
     "heroku-postbuild": "npm run build"
   }
 }
