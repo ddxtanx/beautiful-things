@@ -21,17 +21,15 @@
     "babel-core": "^6.25.0",
     "babel-loader": "^7.1.1",
     "babel-preset-es2015": "^6.24.1",
-    "babel-preset-react": "^6.24.1"
+    "babel-preset-react": "^6.24.1",
+    "compression-webpack-plugin": "^1.0.0"
   },
   "scripts": {
-    "build": "webpack --progress --cache --profile",
+    "build": "webpack -p --progress --cache --profile",
     "create": "npm run build && node server/",
     "test": "echo 'No tests defined'",
     "start": "node server/",
     "heroku-postbuild": "npm run build",
     "send": "git add ./ && git commit -m '$MESSAGE' && git push origin master && git push heroku master"
-  },
-  "devDependencies": {
-    "compression-webpack-plugin": "^1.0.0"
   }
 }
