@@ -8,6 +8,11 @@ const posts = require("../app/posts.js");
 // Serve static assets
 app.use(express.static('./public'), bodyParser());
 // Always return the main index.html, so react-router render the route in the client
+app.get('*.js', function (req, res, next) {
+  req.url = req.url + '.gz';
+  res.set('Content-Encoding', 'gzip');
+  next();
+});
 app.get("/logout", function(req, res){
     console.log("in logout call");
     sessions.destroy(req, res);
