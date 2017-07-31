@@ -6,6 +6,7 @@ class Register extends React.Component {
     constructor(){
         super();
         this.state = {email: "", name:"", pass1:"", pass2:"", type:"", text:""};
+        autoBind(this);
     }
     handleSubmit(){
         var self = this;
