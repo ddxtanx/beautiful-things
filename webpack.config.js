@@ -7,7 +7,6 @@ const plugins = (process.env.build==="production")?([
         NODE_ENV: JSON.stringify('production')
       }
     }),
-    new webpack.optimize.DedupePlugin(),
     new webpack.optimize.AggressiveMergingPlugin(),
     new webpack.optimize.UglifyJsPlugin({
       warnings: false,
