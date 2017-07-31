@@ -6,19 +6,15 @@ const app = express();
 const sessions = require("../app/sessions.js");
 const posts = require("../app/posts.js");
 // Serve static assets
-app.use(express.static('./public'), bodyParser());
-// Always return the main index.html, so react-router render the route in the client
-app.get('*.js', function (req, res, next) {
-  req.url = req.url + '.gz';
-  res.set('Content-Encoding', 'gzip');
-  next();
-});
+app.use(express.static('../public'),express.static('../public/dist'), bodyParser());
 app.get("/logout", function(req, res){
     console.log("in logout call");
     sessions.destroy(req, res);
 });
-app.get("/dist/bundle.js", function(req, res){
-    res.sendFile(path.resolve(__dirname, "../public/dist/bundle/js"));
+app.get("/bundle.js.gz", function(req, res){
+    res.set("Content-Encoding", "gzip");
+    res.set("Content-Type", "text/javascript");
+    res.sendFile(path.resolve(__dirname, "../public/dist/bundle.js.gz"));
 });
 app.get("/*", function(req, res){
     res.sendFile(path.resolve(__dirname, "../public/index.html"));
