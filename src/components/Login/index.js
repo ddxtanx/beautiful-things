@@ -3,7 +3,6 @@ import axios from 'axios';
 import Session from '../../Session';
 import Presenter from './Presenter';
 import autoBind from 'react-autobind';
-import { withRouter } from 'react-router-dom';
 class Login extends React.Component {
     constructor(){
         super();
@@ -30,7 +29,6 @@ class Login extends React.Component {
                 console.log(response.data);
                 Session.setSession(self.props.cookies.get('id'), {loggedin: true, loginData: response.data.loginData} , function(){
                     self.props.updateSession(response.data.alertData);
-                    self.props.history.push("/posts");
                 });
             }
             self.setState(response.data.alertData);
@@ -42,4 +40,4 @@ class Login extends React.Component {
         return <Presenter type={this.state.type} text={this.state.text} handleChange={this.handleChange} handleKeyPress={this.handleKeyPress} handleSubmit={this.handleSubmit}/>;
     }
 }
-export default withRouter(Login);
+export default Login;
