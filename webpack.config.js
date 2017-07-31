@@ -7,11 +7,11 @@ const plugins = (process.env.build==="production")?([
         NODE_ENV: JSON.stringify('production')
       }
     }),
-    new webpack.optimize.AggressiveMergingPlugin(),
     new webpack.optimize.UglifyJsPlugin({
       warnings: false,
       parallel:true
     }),
+    new webpack.optimize.AggressiveMergingPlugin(),
     new CompressionPlugin({
       asset: "[path].gz[query]",
       algorithm: "gzip",
@@ -21,7 +21,6 @@ const plugins = (process.env.build==="production")?([
     })
   ]):[];
 module.exports = {
-  devtool: 'source-map',
   entry: './src/index.js',
   output: {
     filename: 'bundle.js',
