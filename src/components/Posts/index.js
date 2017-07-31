@@ -1,4 +1,4 @@
-import {Component} from 'react';
+import React, {Component} from 'react';
 import Presenter from './Presenter';
 import axios from 'axios';
 import autoBind from 'react-autobind';

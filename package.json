@@ -28,6 +28,7 @@
     "create": "npm run build && node server/",
     "test": "echo 'No tests defined'",
     "start": "node server/",
-    "heroku-postbuild": "npm run build"
+    "heroku-postbuild": "npm run build",
+    "send": "git add ./ && git commit -m '$MESSAGE' && git push origin master && git push heroku master"
   }
 }
