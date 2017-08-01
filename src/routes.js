@@ -14,7 +14,9 @@ const cookies = new Cookies();
 class Routes extends React.Component {
   constructor(props){
     super(props);
-    this.state = {loggedin:false, loginData:{
+    this.state = {
+      loggedin:false,
+      loginData:{
         name:"",
         email:"",
         id:""

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import AddPost from './AddPost';
 import Post from './Post';
 import './style.css';
@@ -28,5 +29,18 @@ class PostsPresent extends Component{
                 </div>)
     }
 }
-
+PostsPresent.propTypes = {
+    posts: PropTypes.arrayOf(Object).isRequired,
+    resText: PropTypes.string.isRequired,
+    resType: PropTypes.string.isRequired,
+    loginData: PropTypes.object.isRequired,
+    handleChange: PropTypes.func.isRequired,
+    handleDelete: PropTypes.func.isRequired,
+    handleLike: PropTypes.func.isRequired,
+    handleSubmit: PropTypes.func.isRequired,
+    findLike: PropTypes.func.isRequired,
+    title: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+    cookies: PropTypes.object.isRequired
+}
 export default PostsPresent;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {Button} from 'react-bootstrap';
 import './style.css';
 import $ from 'jquery';
@@ -30,5 +31,10 @@ class AddPost extends React.Component{
         </div>);
     }
 }
-
+AddPost.propTypes = {
+    title: PropTypes.string.isRequired,
+    handleChange: PropTypes.func.isRequired,
+    text: PropTypes.string.isRequired,
+    handleSubmit: PropTypes.func.isRequired
+}
 export default AddPost;

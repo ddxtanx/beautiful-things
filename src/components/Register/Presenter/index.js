@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './style.css';
 
 class RegisterPresenter extends React.Component{
@@ -29,5 +30,15 @@ class RegisterPresenter extends React.Component{
             );
     }
 }
-
+RegisterPresenter.propTypes = {
+    type: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    handleChange: PropTypes.func.isRequired,
+    handleKeyPress: PropTypes.func.isRequired,
+    handleSubmit: PropTypes.func.isRequired,
+    name: PropTypes.string.isRequired,
+    pass1: PropTypes.string.isRequired,
+    pass2: PropTypes.string.isRequired
+}
 export default RegisterPresenter;

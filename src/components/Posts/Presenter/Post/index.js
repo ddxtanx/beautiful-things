@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {Button} from 'react-bootstrap';
 class Post extends React.Component{
     render(){
@@ -13,5 +14,11 @@ class Post extends React.Component{
 		</div>)
     }
 }
-
+Post.propTypes = {
+	post: PropTypes.object.isRequired,
+	loginData: PropTypes.object.isRequired,
+	handleDelete: PropTypes.func.isRequired,
+	handleLike: PropTypes.func.isRequired,
+	findLike: PropTypes.func.isRequired
+}
 export default Post;

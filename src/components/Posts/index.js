@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import Presenter from './Presenter';
 import axios from 'axios';
 import autoBind from 'react-autobind';
@@ -121,5 +122,8 @@ class PostsContainer extends Component{
         return <Presenter posts={this.state.posts} title={this.state.title} text={this.state.text} resType={this.state.resType} resText={this.state.resText} cookies={this.props.cookies} loginData={this.props.loginData} handleChange={this.handleChange} handleSubmit={this.handleSubmit} handleDelete={this.handleDelete} handleLike={this.handleLike} findLike={this.findLike}/>;
     }
 }
-
+PostsContainer.propTypes = {
+    cookies: PropTypes.object.isRequired,
+    loginData: PropTypes.object.isRequired
+}
 export default PostsContainer;

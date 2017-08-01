@@ -9,6 +9,7 @@
     "jquery": "^3.2.1",
     "mongoose": "^4.9.9",
     "morgan": "*",
+    "prop-types": "^15.5.10",
     "react": "^15.5.4",
     "react-autobind": "^1.0.6",
     "react-bootstrap": "^0.31.0",

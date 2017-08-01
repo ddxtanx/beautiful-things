@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {Navbar, NavItem, Nav} from 'react-bootstrap';
 import './style.css';
 
@@ -35,5 +36,10 @@ class NavBar extends React.Component{
                 </Navbar>
             );
     }
+}
+NavBar.propTypes = {
+    loggedin: PropTypes.bool.isRequired,
+    cookies: PropTypes.object.isRequired,
+    loginData: PropTypes.object.isRequired
 }
 export default NavBar;

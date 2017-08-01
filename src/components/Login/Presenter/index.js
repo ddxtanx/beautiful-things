@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './style.css';
 
 class LoginPresenter extends React.Component{
@@ -22,6 +23,15 @@ class LoginPresenter extends React.Component{
             </div>
         );
     }
+}
+LoginPresenter.propTypes = {
+    type: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    password: PropTypes.string.isRequired,
+    handleChange: PropTypes.func.isRequired,
+    handleKeyPress: PropTypes.func.isRequired,
+    handleSubmit: PropTypes.func.isRequired
 }
 
 export default LoginPresenter;
