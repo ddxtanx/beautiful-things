@@ -1,0 +1,1 @@
+ if [ "$build" == "production" ]; then webpack -p; else webpack --progress --cache --p

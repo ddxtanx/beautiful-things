@@ -31,7 +31,7 @@
     "webpack-dev-server": "^2.6.1"
   },
   "scripts": {
-    "build": "if [ \"$build\" == \"production\" ]; then webpack -p; else webpack --progress --cache --profile; fi",
+    "build": "bash buildScript.sh",
     "watch": "webpack --watch",
     "create": "npm run build && node server/",
     "test": "echo 'No tests defined'",
