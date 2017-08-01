@@ -11,7 +11,6 @@ class PostsContainer extends Component{
     getPosts(){
         var self = this;
         axios.post("getPosts").then(function(data){
-            console.log(data.data);
             self.setState({posts: data.data});
         }).catch(function(err){
             if(err) throw err;
@@ -34,9 +33,7 @@ class PostsContainer extends Component{
                 text: this.state.text,
                 id: this.props.cookies.get('id')
             }).then(function(data){
-                console.log(data.data);
                 var posts = self.state.posts;
-                console.log(posts);
                 var post = {
                     title: self.state.title,
                     text: self.state.text,
@@ -46,13 +43,12 @@ class PostsContainer extends Component{
                     likes: []
                 }
                 posts.unshift(post);
-                console.log(posts);
-                self.setState({resType:"success", resText:"Post successfully added!", posts: posts});
+                self.setState({resType:"success", resText:"Post successfully added!", posts: posts, title:"", text: ""});
             }).catch(function(err){
                 if(err) throw err;
             });
         } else{
-            self.setState({resType: "danger", resText:"Title and text cannot be blank"});
+            self.setState({resType: "danger", resText:"Title nor text cannot be blank"});
         }
     }
     handleDelete(postUserId, postId){
@@ -62,14 +58,11 @@ class PostsContainer extends Component{
             postUserId,
             userId: self.props.cookies.get('id')
         }).then(function(data){
-            console.log(data.data);
             if(data.data.success){
                 let posts = self.state.posts;
-                console.log(posts);
                 posts = posts.filter(function(post){
                     return post.postId!==postId
                 });
-                console.log(posts);
                 self.setState({posts});
                 self.setState({resType: "success", resText:"Successfully deleted!"});
             } else {
@@ -125,7 +118,7 @@ class PostsContainer extends Component{
         }
     }
     render(){
-        return <Presenter posts={this.state.posts} type={this.state.resType} text={this.state.resText} cookies={this.props.cookies} loginData={this.props.loginData} handleChange={this.handleChange} handleSubmit={this.handleSubmit} handleDelete={this.handleDelete} handleLike={this.handleLike} findLike={this.findLike}/>;
+        return <Presenter posts={this.state.posts} title={this.state.title} text={this.state.text} resType={this.state.resType} resText={this.state.resText} cookies={this.props.cookies} loginData={this.props.loginData} handleChange={this.handleChange} handleSubmit={this.handleSubmit} handleDelete={this.handleDelete} handleLike={this.handleLike} findLike={this.findLike}/>;
     }
 }
 

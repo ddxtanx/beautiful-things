@@ -11,7 +11,7 @@ class PostsPresent extends Component{
     render(){
         var posts = this.props.posts;
         var htmlPosts = [];
-        var alertClass = `alert alert-${this.props.type}`;
+        var alertClass = `alert alert-${this.props.resType}`;
         for(var x = 0; x<posts.length; x++){
             var post = posts[x];
             var postElement = (<Post className="post" key={post.postId} loginData={this.props.loginData} handleLike={this.props.handleLike} handleDelete={this.props.handleDelete} findLike={this.props.findLike} post={post}/>);
@@ -19,9 +19,9 @@ class PostsPresent extends Component{
         }
         return (<div>
                     <div className={alertClass}>
-                        {this.props.text}
+                        {this.props.resText}
                     </div>
-                    <AddPost cookies={this.props.cookies} loginData={this.props.loginData} handleChange={this.props.handleChange} handleSubmit={this.props.handleSubmit}/>
+                    <AddPost title={this.props.title} text={this.props.text} cookies={this.props.cookies} loginData={this.props.loginData} handleChange={this.props.handleChange} handleSubmit={this.props.handleSubmit}/>
                     <div id="posts">
                         {htmlPosts}
                     </div>

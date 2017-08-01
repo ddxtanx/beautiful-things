@@ -9,6 +9,7 @@ import Register from './components/Register';
 import Session from './Session';
 import Posts from './components/Posts';
 import NotLoggedIn from './components/NotLoggedIn';
+import autoBind from 'react-autobind';
 const cookies = new Cookies();
 class Routes extends React.Component {
   constructor(props){
@@ -19,8 +20,7 @@ class Routes extends React.Component {
         id:""
       }
     };
-    this.componentWillMount = this.componentWillMount.bind(this);
-    this.updateSession = this.updateSession.bind(this);
+    autoBind(this);
   }
   updateSession(alertData){
     var self = this;

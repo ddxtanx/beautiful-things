@@ -3,10 +3,11 @@ import axios from 'axios';
 import Session from '../../Session';
 import Presenter from './Presenter';
 import autoBind from 'react-autobind';
+let alertData = {type: "", text: ""};
 class Login extends React.Component {
     constructor(){
         super();
-        this.state = {email:"", password:"", type:"", text:""};
+        this.state = {email:"", password:"", type:alertData.type, text:alertData.text};
         autoBind(this);
     }
     handleChange(e){
@@ -26,18 +27,19 @@ class Login extends React.Component {
             password: this.state.password
         }).then(function(response){
             if(response.data.success){
-                console.log(response.data);
                 Session.setSession(self.props.cookies.get('id'), {loggedin: true, loginData: response.data.loginData} , function(){
-                    self.props.updateSession(response.data.alertData);
+                    self.props.updateSession(response.data.loginData);
                 });
             }
-            self.setState(response.data.alertData);
+            alertData = response.data.alertData;
+            self.setState(alertData);
         }).catch(function(err){
             throw err;
         });
+        this.setState({email: "", password: ""})
     }
     render(){
-        return <Presenter type={this.state.type} text={this.state.text} handleChange={this.handleChange} handleKeyPress={this.handleKeyPress} handleSubmit={this.handleSubmit}/>;
+        return <Presenter email={this.state.email} password={this.state.password} type={this.state.type} text={this.state.text} handleChange={this.handleChange} handleKeyPress={this.handleKeyPress} handleSubmit={this.handleSubmit}/>;
     }
 }
 export default Login;

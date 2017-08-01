@@ -9,9 +9,6 @@ class AddPost extends React.Component{
         super(props);
         autoBind(this);
     }
-    componentDidMount(){
-        this.hideForm();
-    }
     showForm(){
         $("#addPost").show("fast");
     }
@@ -20,11 +17,11 @@ class AddPost extends React.Component{
     }
     render(){
         return (<div>
-            <div id="addPost">
+            <div id="addPost" style={{"display": "none"}}>
                <label htmlFor="title">Title:</label>
-               <input type="text" id="title" onChange={this.props.handleChange}/>
+               <input type="text" id="title" value={this.props.title} onChange={this.props.handleChange}/>
                <br/>
-                <textarea id="text" onChange={this.props.handleChange}/>
+                <textarea id="text" value={this.props.text} onChange={this.props.handleChange}/>
                 <br/>
                 <Button type="button" bsStyle="success" onClick={this.props.handleSubmit}>Submit</Button>
                 <Button type="button" bsStyle="warning" onClick={this.hideForm}>Cancel</Button>

@@ -26,7 +26,7 @@ class Register extends React.Component {
             name: this.state.name,
             pass: this.state.pass1
         }).then(function(response){
-           self.setState(response.data); 
+           self.setState(Object.assign({}, response.data, {email: "", name: "", pass1: "", pass2: ""})); 
         }).catch(function(err){
             throw err;
         });
@@ -43,7 +43,7 @@ class Register extends React.Component {
         }
     }
     render(){
-        return <Presenter type={this.state.type} text={this.state.text} handleChange={this.handleChange} handleKeyPress={this.handleKeyPress} handleSubmit={this.handleSubmit}/>
+        return <Presenter type={this.state.type} text={this.state.text} email={this.state.email} name={this.state.name} pass1={this.state.pass1} pass2={this.state.pass2} handleChange={this.handleChange} handleKeyPress={this.handleKeyPress} handleSubmit={this.handleSubmit}/>
     }
 }
 export default Register;
