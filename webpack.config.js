@@ -1,7 +1,26 @@
 const path = require('path');
 const webpack = require('webpack');
 var CompressionPlugin = require('compression-webpack-plugin');
-const plugins = (process.env.build==="production")?([
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+let plugins = [
+  new webpack.optimize.CommonsChunkPlugin({
+    name: 'vendor',
+    minChunks: Infinity,
+    filename: '[name].[hash].js',
+  }),
+
+  /**
+  * HtmlWebpackPlugin will make sure out JavaScript files are being called
+  * from within our index.html
+  */
+  new HtmlWebpackPlugin({
+    template: path.join(__dirname, './public/index.template.html'),
+    filename: path.join(__dirname, './public/index.html'),
+    inject: 'body',
+  })
+];
+if(process.env.build==="production"){
+  plugins = plugins.concat([
   new webpack.DefinePlugin({
     'process.env': {
       NODE_ENV: JSON.stringify('production')
@@ -12,21 +31,17 @@ const plugins = (process.env.build==="production")?([
     parallel:true,
     sourceMap: false
   }),
-  new webpack.optimize.AggressiveMergingPlugin(),
-  new CompressionPlugin({
-    asset: "[path].gz[query]",
-    algorithm: "gzip",
-    test: /\.js$|\.css$|\.html$/,
-    threshold: 10240,
-    minRatio: 0.8
-  })
-]):[];
+  new webpack.optimize.AggressiveMergingPlugin()
+])}
 module.exports = {
-  entry: './src/index.js',
+  entry: {
+    app: path.join(__dirname, './src/'),
+    vendor: ['react', 'react-dom', 'react-router'],
+  },
   cache: true,
   output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'public/dist')
+    filename: '[name].[hash].js',
+    path: path.join(__dirname, './public/dist/'),
   },
   module: {
     rules: [{

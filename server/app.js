@@ -5,22 +5,20 @@ const users = require('../app/users.js');
 const app = express();
 const sessions = require("../app/sessions.js");
 const posts = require("../app/posts.js");
-let packageName = (process.env.build==="production")?"bundle.js.gz":"bundle.js"
+const fs = require('fs');
 // Serve static assets
-app.use(express.static('../public'),express.static('../public/dist'), bodyParser());
+app.use(express.static(path.resolve(__dirname,'../public')), bodyParser());
 app.get("/logout", function(req, res){
     console.log("in logout call");
     sessions.destroy(req, res);
 });
-app.get(`/${packageName}`, function(req, res){
-    if(packageName==="bundle.js.gz"){
-        res.set("Content-Encoding", "gzip");
-    }
+app.get("/:filename.js", function(req, res){
     res.set("Content-Type", "text/javascript");
-    res.sendFile(path.resolve(__dirname, `../public/dist/${packageName}`));
-});
+    var filename = req.params.filename;
+    res.sendFile(path.resolve(__dirname, "../public/dist/"+filename+".js"));
+})
 app.get("/*", function(req, res){
-    var filename = (process.env.build==="production")?"../public/index.html":"../public/index.test.html"
+    var filename = "../public/index.html"
     res.sendFile(path.resolve(__dirname, filename));
 })
 app.post("/register", function(req, res){
