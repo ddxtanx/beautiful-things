@@ -2,14 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import Navbar from './components/Navbar';
-/*
-import App from './components/App';
-import NotFound from './components/404';
-import Login from './components/Login';
-import Register from './components/Register';
-import Posts from './components/Posts';
-import NotLoggedIn from './components/NotLoggedIn';
-*/
 import Bundle from './components/Bundle';
 import loadApp from 'bundle-loader?lazy!./components/App';
 import loadNotFound from 'bundle-loader?lazy!./components/404';
