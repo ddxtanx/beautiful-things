@@ -5,9 +5,9 @@ const users = require('../app/users.js');
 const app = express();
 const sessions = require("../app/sessions.js");
 const posts = require("../app/posts.js");
-const fs = require('fs');
+const compression = require('compression');
 // Serve static assets
-app.use(express.static(path.resolve(__dirname,'../public')), bodyParser());
+app.use(compression(), express.static(path.resolve(__dirname,'../public')), bodyParser());
 app.get("/logout", function(req, res){
     console.log("in logout call");
     sessions.destroy(req, res);
