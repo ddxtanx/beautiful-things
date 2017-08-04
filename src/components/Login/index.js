@@ -7,6 +7,12 @@ import autoBind from 'react-autobind';
 import $ from 'jquery';
 import 'jquery-modal';
 let alertData = {type: "", text: ""};
+$.modal.defaults = {
+  escapeClose: false,      // Allows the user to close the modal by pressing `ESC`
+  clickClose: false,       // Allows the user to close the modal by clicking the overlay
+  closeText: null,     // Text content for the close <a> tag.
+  showClose: false
+}
 class Login extends React.Component {
     constructor(){
         super();

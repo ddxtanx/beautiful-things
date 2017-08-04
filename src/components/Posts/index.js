@@ -6,6 +6,12 @@ import autoBind from 'react-autobind';
 import $ from 'jquery';
 import 'jquery-modal';
 import Loading from '../Loading';
+$.modal.defaults = {
+  escapeClose: false,      // Allows the user to close the modal by pressing `ESC`
+  clickClose: false,       // Allows the user to close the modal by clicking the overlay
+  closeText: null,     // Text content for the close <a> tag.
+  showClose: false
+}
 class PostsContainer extends Component{
     constructor(props){
         super(props);
