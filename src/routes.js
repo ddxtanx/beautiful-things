@@ -15,7 +15,9 @@ import autoBind from 'react-autobind';
 const cookies = new Cookies();
 const Loader = (props) => (
   <Bundle load={props.loader}>
-    {(Comp) => (Comp)?(<Comp {...props}/>):<Loading/>}
+    {function (Comp) {
+      return (Comp ? <Comp {...props}/> : <Loading/>)
+    }}
   </Bundle>
 )
 class Routes extends React.Component {

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-
+import Loading from '../Loading';
+import autoBind from 'react-autobind';
 class Bundle extends Component {
     constructor(){
         super();
@@ -7,10 +8,14 @@ class Bundle extends Component {
             // short for "module" but that's a keyword in js, so "mod"
             mod: null
         }
+        autoBind(this);
     }
 
   componentWillMount() {
     this.load(this.props)
+    this.setState({
+      mod: null
+    })
   }
 
   componentWillReceiveProps(nextProps) {
@@ -20,11 +25,12 @@ class Bundle extends Component {
   }
 
   load(props) {
+    var self = this;
     this.setState({
       mod: null
     })
     props.load((mod) => {
-      this.setState({
+      self.setState({
         // handle both es imports and cjs
         mod: mod.default ? mod.default : mod
       })
@@ -32,7 +38,7 @@ class Bundle extends Component {
   }
 
   render() {
-    return this.state.mod ? this.props.children(this.state.mod) : null
+    return this.state.mod ? this.props.children(this.state.mod) : <Loading/>
   }
 }
 

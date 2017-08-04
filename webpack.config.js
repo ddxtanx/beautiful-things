@@ -19,7 +19,7 @@ if(process.env.build==="production"){
 plugins = plugins.concat([  new webpack.optimize.CommonsChunkPlugin({
     name: 'vendor',
     minChunks: Infinity,
-    filename: '[name].[hash].js',
+    filename: '[name].js',
   }),
 
   /**
@@ -39,7 +39,7 @@ module.exports = {
   },
   cache: true,
   output: {
-    filename: '[name].[hash].js',
+    filename: '[name].js',
     path: path.join(__dirname, './public/dist/'),
   },
   module: {
