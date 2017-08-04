@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import Presenter from './Presenter';
 import axios from 'axios';
 import autoBind from 'react-autobind';
+import $ from 'jquery';
+import 'jquery-modal';
+import Loading from '../Loading';
 class PostsContainer extends Component{
     constructor(props){
         super(props);
@@ -11,7 +14,9 @@ class PostsContainer extends Component{
     }
     getPosts(){
         var self = this;
+        $("#loading").modal();
         axios.post("getPosts").then(function(data){
+            $.modal.close();
             self.setState({posts: data.data});
         }).catch(function(err){
             if(err) throw err;
@@ -28,12 +33,14 @@ class PostsContainer extends Component{
     handleSubmit(){
         var self = this;
         if(this.state.title!==""&&this.state.text!==""){
+            $("#loading").modal();
             this.setState({resType:"", resText:""});
             axios.post("addPost",{
                 title: this.state.title,
                 text: this.state.text,
                 id: this.props.cookies.get('id')
             }).then(function(data){
+                $.modal.close();
                 var posts = self.state.posts;
                 var post = {
                     title: self.state.title,
@@ -54,11 +61,13 @@ class PostsContainer extends Component{
     }
     handleDelete(postUserId, postId){
         let self = this;
+        $("#loading").modal();
         axios.post("deletePost",{
             postId,
             postUserId,
             userId: self.props.cookies.get('id')
         }).then(function(data){
+            $.modal.close();
             if(data.data.success){
                 let posts = self.state.posts;
                 posts = posts.filter(function(post){
@@ -91,10 +100,12 @@ class PostsContainer extends Component{
         let self = this;
         let posts = this.state.posts;
         let post = posts.filter((post) => post.postId === postId)[0];
+        $("#loading").modal();
         axios.post("likePost", {
             postId,
             userId: self.props.cookies.get('id')
         }).then(function(data){
+            $.modal.close();
             if(data.data.liked){
                 post.likes.push(data.data.userId.toString());
                 self.setState({posts: self.updatePosts(postId, post)});
@@ -119,7 +130,12 @@ class PostsContainer extends Component{
         }
     }
     render(){
-        return <Presenter posts={this.state.posts} title={this.state.title} text={this.state.text} resType={this.state.resType} resText={this.state.resText} cookies={this.props.cookies} loginData={this.props.loginData} handleChange={this.handleChange} handleSubmit={this.handleSubmit} handleDelete={this.handleDelete} handleLike={this.handleLike} findLike={this.findLike}/>;
+        return (<div>
+                    <div id="loading" style={{display:"none"}}>
+                        <Loading/>
+                    </div>
+                    <Presenter posts={this.state.posts} title={this.state.title} text={this.state.text} resType={this.state.resType} resText={this.state.resText} cookies={this.props.cookies} loginData={this.props.loginData} handleChange={this.handleChange} handleSubmit={this.handleSubmit} handleDelete={this.handleDelete} handleLike={this.handleLike} findLike={this.findLike}/>
+                </div>);
     }
 }
 PostsContainer.propTypes = {

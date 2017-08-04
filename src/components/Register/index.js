@@ -1,6 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 import Presenter from './Presenter';
+import $ from 'jquery';
+import 'jquery-modal';
+import Loading from '../Loading';
 import autoBind from 'react-autobind';
 class Register extends React.Component {
     constructor(){
@@ -20,12 +23,14 @@ class Register extends React.Component {
             this.setState({type: "alert-danger", text: "All fields must be filled out"});
             return;
         }
+        $("#loading").modal();
         this.setState({type: "", text:""});
         axios.post("register",{
             email: this.state.email,
             name: this.state.name,
             pass: this.state.pass1
         }).then(function(response){
+            $.modal.close();
            self.setState(Object.assign({}, response.data, {email: "", name: "", pass1: "", pass2: ""})); 
         }).catch(function(err){
             throw err;
@@ -43,7 +48,12 @@ class Register extends React.Component {
         }
     }
     render(){
-        return <Presenter type={this.state.type} text={this.state.text} email={this.state.email} name={this.state.name} pass1={this.state.pass1} pass2={this.state.pass2} handleChange={this.handleChange} handleKeyPress={this.handleKeyPress} handleSubmit={this.handleSubmit}/>
+        return (<div>
+                    <div id="loading" style={{display: "none"}}>
+                        <Loading/>
+                    </div>
+                    <Presenter type={this.state.type} text={this.state.text} email={this.state.email} name={this.state.name} pass1={this.state.pass1} pass2={this.state.pass2} handleChange={this.handleChange} handleKeyPress={this.handleKeyPress} handleSubmit={this.handleSubmit}/>
+                </div>)
     }
 }
 export default Register;
