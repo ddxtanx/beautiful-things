@@ -2,15 +2,8 @@ import React from 'react';
 import axios from 'axios';
 import Presenter from './Presenter';
 import $ from 'jquery';
-import 'jquery-modal';
 import Loading from '../Loading';
 import autoBind from 'react-autobind';
-$.modal.defaults = {
-  escapeClose: false,      // Allows the user to close the modal by pressing `ESC`
-  clickClose: false,       // Allows the user to close the modal by clicking the overlay
-  closeText: null,     // Text content for the close <a> tag.
-  showClose: false
-}
 class Register extends React.Component {
     constructor(){
         super();
@@ -29,14 +22,14 @@ class Register extends React.Component {
             this.setState({type: "alert-danger", text: "All fields must be filled out"});
             return;
         }
-        $("#loading").modal();
+        $("#loading").show();
         this.setState({type: "", text:""});
         axios.post("register",{
             email: this.state.email,
             name: this.state.name,
             pass: this.state.pass1
         }).then(function(response){
-            $.modal.close();
+            $("#loading").hide();
            self.setState(Object.assign({}, response.data, {email: "", name: "", pass1: "", pass2: ""})); 
         }).catch(function(err){
             throw err;
@@ -55,9 +48,7 @@ class Register extends React.Component {
     }
     render(){
         return (<div>
-                    <div id="loading" style={{display: "none"}}>
-                        <Loading/>
-                    </div>
+                    <Loading id="loading" style={{display: "none"}}/>
                     <Presenter type={this.state.type} text={this.state.text} email={this.state.email} name={this.state.name} pass1={this.state.pass1} pass2={this.state.pass2} handleChange={this.handleChange} handleKeyPress={this.handleKeyPress} handleSubmit={this.handleSubmit}/>
                 </div>)
     }

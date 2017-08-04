@@ -4,14 +4,7 @@ import Presenter from './Presenter';
 import axios from 'axios';
 import autoBind from 'react-autobind';
 import $ from 'jquery';
-import 'jquery-modal';
 import Loading from '../Loading';
-$.modal.defaults = {
-  escapeClose: false,      // Allows the user to close the modal by pressing `ESC`
-  clickClose: false,       // Allows the user to close the modal by clicking the overlay
-  closeText: null,     // Text content for the close <a> tag.
-  showClose: false
-}
 class PostsContainer extends Component{
     constructor(props){
         super(props);
@@ -20,9 +13,9 @@ class PostsContainer extends Component{
     }
     getPosts(){
         var self = this;
-        $("#loading").modal();
+        $("#loading").show();
         axios.post("getPosts").then(function(data){
-            $.modal.close();
+            $("#loading").hide();
             self.setState({posts: data.data});
         }).catch(function(err){
             if(err) throw err;
@@ -39,14 +32,14 @@ class PostsContainer extends Component{
     handleSubmit(){
         var self = this;
         if(this.state.title!==""&&this.state.text!==""){
-            $("#loading").modal();
+            $("#loading").show();
             this.setState({resType:"", resText:""});
             axios.post("addPost",{
                 title: this.state.title,
                 text: this.state.text,
                 id: this.props.cookies.get('id')
             }).then(function(data){
-                $.modal.close();
+                $("#loading").hide();
                 var posts = self.state.posts;
                 var post = {
                     title: self.state.title,
@@ -67,13 +60,13 @@ class PostsContainer extends Component{
     }
     handleDelete(postUserId, postId){
         let self = this;
-        $("#loading").modal();
+        $("#loading").show();
         axios.post("deletePost",{
             postId,
             postUserId,
             userId: self.props.cookies.get('id')
         }).then(function(data){
-            $.modal.close();
+            $("#loading").hide();
             if(data.data.success){
                 let posts = self.state.posts;
                 posts = posts.filter(function(post){
@@ -106,12 +99,12 @@ class PostsContainer extends Component{
         let self = this;
         let posts = this.state.posts;
         let post = posts.filter((post) => post.postId === postId)[0];
-        $("#loading").modal();
+        $("#loading").show();
         axios.post("likePost", {
             postId,
             userId: self.props.cookies.get('id')
         }).then(function(data){
-            $.modal.close();
+            $("#loading").hide();
             if(data.data.liked){
                 post.likes.push(data.data.userId.toString());
                 self.setState({posts: self.updatePosts(postId, post)});
@@ -137,9 +130,7 @@ class PostsContainer extends Component{
     }
     render(){
         return (<div>
-                    <div id="loading" style={{display:"none"}}>
-                        <Loading/>
-                    </div>
+                    <Loading id="loading" style={{display: "none"}}/>
                     <Presenter posts={this.state.posts} title={this.state.title} text={this.state.text} resType={this.state.resType} resText={this.state.resText} cookies={this.props.cookies} loginData={this.props.loginData} handleChange={this.handleChange} handleSubmit={this.handleSubmit} handleDelete={this.handleDelete} handleLike={this.handleLike} findLike={this.findLike}/>
                 </div>);
     }

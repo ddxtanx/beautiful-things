@@ -5,19 +5,15 @@ import Presenter from './Presenter';
 import Loading from '../Loading';
 import autoBind from 'react-autobind';
 import $ from 'jquery';
-import 'jquery-modal';
-let alertData = {type: "", text: ""};
-$.modal.defaults = {
-  escapeClose: false,      // Allows the user to close the modal by pressing `ESC`
-  clickClose: false,       // Allows the user to close the modal by clicking the overlay
-  closeText: null,     // Text content for the close <a> tag.
-  showClose: false
-}
+let alertData = {type: "", text: ""};false
 class Login extends React.Component {
     constructor(){
         super();
         this.state = {email:"", password:"", type:alertData.type, text:alertData.text};
         autoBind(this);
+    }
+    componentDidMount(){
+        $("#loading").hide();
     }
     handleChange(e){
         var stateData = {};
@@ -31,12 +27,12 @@ class Login extends React.Component {
     }
     handleSubmit(){
         var self = this;
-        $("#loading").modal()
+        $("#loading").show();
         axios.post("/login", {
             email: this.state.email,
             password: this.state.password
         }).then(function(response){
-            $.modal.close();
+            $("#loading").hide();
             if(response.data.success){
                 Session.setSession(self.props.cookies.get('id'), {loggedin: true, loginData: response.data.loginData} , function(){
                     self.props.updateSession(response.data.loginData);
@@ -51,9 +47,7 @@ class Login extends React.Component {
     }
     render(){
         return (<div>
-                    <div id="loading" style={{display: 'none'}}>
-                        <Loading/>
-                    </div>
+                    <Loading id="loading"/>
                     <Presenter email={this.state.email} password={this.state.password} type={this.state.type} text={this.state.text} handleChange={this.handleChange} handleKeyPress={this.handleKeyPress} handleSubmit={this.handleSubmit}/>
                 </div>
         );
