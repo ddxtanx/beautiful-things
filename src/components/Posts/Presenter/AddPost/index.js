@@ -16,6 +16,20 @@ class AddPost extends React.Component{
     hideForm(){
         $("#addPost").hide("fast");
     }
+    convertFile(file){
+        console.log(file);
+        if(file&&(JSON.stringify(file)!==JSON.stringify([]))){
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function(){
+                $("#preview").attr("src", reader.result);
+            }
+            reader.onerror = function(error){
+                throw error;
+            }
+        }
+        return ""
+    }
     render(){
         return (<div>
             <form id="addPost" style={{"display": "none"}}>
@@ -26,7 +40,7 @@ class AddPost extends React.Component{
                 <br/>
                 <input type="file" id="file" value={this.props.file} onChange={this.props.handleChange}/>
                 <br/>
-                <img className="image" id="preview" src={URL.createObjectURL(new Blob((this.props.file)?[this.props.file]:[], {type: (this.props.file)?this.props.file.mimetype:''}))} alt="Your Image"/>
+                <img className="image" id="preview" src={this.convertFile(this.props.file)} alt="Your Image"/>
                 <br/>
                 <Button type="button" bsStyle="success" onClick={this.props.handleSubmit}>Submit</Button>
                 <Button type="button" bsStyle="warning" onClick={this.hideForm}>Cancel</Button>
