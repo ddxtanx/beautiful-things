@@ -10,6 +10,7 @@ const multer = require("multer");
 const upload = multer({
     dest: './public/img/'
 });
+const fs = require("fs");
 // Serve static assets
 app.use(compression(), express.static(path.resolve(__dirname,'../public')), bodyParser.json(), bodyParser.urlencoded({
     extended:true
@@ -60,5 +61,17 @@ app.post("/deletePost", function(req, res){
 app.post("/likePost", function(req, res){
     console.log("in likePost call");
     posts.likePost(req, res);
+});
+app.post("/image", function(req, res){
+    fs.readFile('./public/img/'+req.body.name, (err, file) => {
+        if(err){
+            console.log(err);
+            fs.readFile("./public/img/errorstop.png", (err, file) => {
+                if(err) throw err;
+                res.end(JSON.stringify({file: file.toString('base64'), success:true}));
+            })
+        }
+        res.end(JSON.stringify({file: file.toString('base64'), success:true}));
+    })
 })
 module.exports = app;

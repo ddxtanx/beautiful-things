@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Button} from 'react-bootstrap';
+import Image from '../../../Image';
 class Post extends React.Component{
     render(){
 		var post = this.props.post;
 		var delButton = (this.props.loginData.id==post.userIdWhoAdded)?<Button className="delete" onClick={() => this.props.handleDelete(post.userIdWhoAdded, post.postId)}><span className="fa fa-times"></span></Button>:<div></div>;
 		return (<div>
-			<img className="image" src={"/img/"+post.image}/>
+			<Image imageName={post.image}/>
 			<h2 className="title">{post.title}</h2>
 			<hr/>
 			<h4 className="text">{post.text}</h4>
