@@ -5,10 +5,25 @@ import axios from 'axios';
 import autoBind from 'react-autobind';
 import $ from 'jquery';
 import Loading from '../Loading';
+function testMime(file){
+    var match = file.type.match(/image\/(gif|png|jpg|jpeg)/);
+    if(match!==null){
+        return match[0]===file.type;
+    } else{
+        return false;
+    }
+}
 class PostsContainer extends Component{
     constructor(props){
         super(props);
-        this.state={posts:[], resType:"", resText:"", title: "", text: ""};
+        this.state={
+            posts:[],
+            resType:"", 
+            resText:"", 
+            title: "", 
+            text: "",
+            file: ""
+        };
         autoBind(this);
     }
     getPosts(){
@@ -26,19 +41,31 @@ class PostsContainer extends Component{
     }
     handleChange(e){
         var changeObj = {};
-        changeObj[e.target.id] = e.target.value;
+        if(e.target.id === "file"){
+            changeObj = {
+                file: e.target.files[0]
+            };
+        } else{
+            changeObj[e.target.id] = e.target.value;
+        }
         this.setState(changeObj);
     }
     handleSubmit(){
         var self = this;
-        if(this.state.title!==""&&this.state.text!==""){
+        if(this.state.title!==""&&this.state.text!==""&&this.state.file!==""&&testMime(this.state.file)){
+            var data;
+            var opts;
+            data = new FormData();
+            data.append("title", this.state.title);
+            data.append("text", this.state.text);
+            data.append("id", this.props.cookies.get('id'));
+            data.append("file", this.state.file);
+            opts = {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            }
             $("#loading").show();
             this.setState({resType:"", resText:""});
-            axios.post("addPost",{
-                title: this.state.title,
-                text: this.state.text,
-                id: this.props.cookies.get('id')
-            }).then(function(data){
+            axios.post("addPost",data,opts).then(function(data){
                 $("#loading").hide();
                 var posts = self.state.posts;
                 var post = {
@@ -47,15 +74,17 @@ class PostsContainer extends Component{
                     userIdWhoAdded: data.data.userId,
                     userWhoAdded: data.data.name,
                     postId: data.data.postId,
-                    likes: []
+                    likes: [],
+                    image: data.data.image
                 }
                 posts.unshift(post);
-                self.setState({resType:"success", resText:"Post successfully added!", posts: posts, title:"", text: ""});
+                self.setState({resType:"success", resText:"Post successfully added!", posts: posts, title:"", text: "", file:[]});
+                $("#addPost").hide('fast');
             }).catch(function(err){
                 if(err) throw err;
             });
         } else{
-            self.setState({resType: "danger", resText:"Title nor text cannot be blank"});
+            self.setState({resType: "danger", resText:"Title nor text nor file cannot be blank & file must be and image"});
         }
     }
     handleDelete(postUserId, postId){
@@ -131,7 +160,7 @@ class PostsContainer extends Component{
     render(){
         return (<div>
                     <Loading id="loading" style={{display: "none"}}/>
-                    <Presenter posts={this.state.posts} title={this.state.title} text={this.state.text} resType={this.state.resType} resText={this.state.resText} cookies={this.props.cookies} loginData={this.props.loginData} handleChange={this.handleChange} handleSubmit={this.handleSubmit} handleDelete={this.handleDelete} handleLike={this.handleLike} findLike={this.findLike}/>
+                    <Presenter posts={this.state.posts} title={this.state.title} file={this.state.file} text={this.state.text} file={this.state.file} resType={this.state.resType} resText={this.state.resText} cookies={this.props.cookies} loginData={this.props.loginData} handleChange={this.handleChange} handleSubmit={this.handleSubmit} handleDelete={this.handleDelete} handleLike={this.handleLike} findLike={this.findLike}/>
                 </div>);
     }
 }

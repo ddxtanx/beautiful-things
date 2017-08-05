@@ -22,7 +22,7 @@ class PostsPresent extends Component{
                     <div className={alertClass}>
                         {this.props.resText}
                     </div>
-                    <AddPost title={this.props.title} text={this.props.text} cookies={this.props.cookies} loginData={this.props.loginData} handleChange={this.props.handleChange} handleSubmit={this.props.handleSubmit}/>
+                    <AddPost title={this.props.title} text={this.props.text} file={this.props.file} cookies={this.props.cookies} loginData={this.props.loginData} handleChange={this.props.handleChange} handleSubmit={this.props.handleSubmit}/>
                     <div id="posts">
                         {htmlPosts}
                     </div>

@@ -1,5 +1,6 @@
 var Post = require('./Models/Post');
 var sessions = require("./sessions.js");
+var fs = require("fs");
 function getPosts(req, res){
     Post.find({}, null, {
         sort:{
@@ -25,11 +26,12 @@ function addPost(req, res){
         userIdWhoAdded: loginId,
         userWhoAdded: userName,
         postId,
-        likes: []
+        likes: [],
+        image: req.file.filename
     }, function(err){
         if(err) throw err;
         res.writeHead(200, {"Content-Type": "text/json"});
-        res.end(JSON.stringify({userId: loginId, name: userName, postId}));
+        res.end(JSON.stringify({userId: loginId, name: userName, postId, image: req.file.filename}));
     });
 }
 
@@ -38,15 +40,21 @@ function deletePost(req, res){
     let userId = req.body.userId;
     let loginId = sessions.getSessionData(userId).loginData.id;
     let postUserId = req.body.postUserId;
-    console.log(loginId);
-    console.log(postUserId);
     if(loginId === postUserId){
         console.log("removing");
-        Post.remove({
-            postId: req.body.postId
-        }, function(err, resp){
+        Post.findOneAndRemove({
+            postId: req.body.postId,
+            userIdWhoAdded: loginId
+        }, function(err, post){
             if(err) throw err;
-            res.end(JSON.stringify({success:true}));
+            if(post!==null){
+                fs.unlink("./public/img/"+post.image, function(err){
+                    if(err) throw err;
+                    res.end(JSON.stringify({success:true}));
+                })
+            } else{
+                res.end(JSON.stringify({success: false}));
+            }
         });
     } else{
         console.log(`falst attempt to remove by ${loginId}`);

@@ -6,8 +6,14 @@ const app = express();
 const sessions = require("../app/sessions.js");
 const posts = require("../app/posts.js");
 const compression = require('compression');
+const multer = require("multer");
+const upload = multer({
+    dest: './public/img/'
+});
 // Serve static assets
-app.use(compression(), express.static(path.resolve(__dirname,'../public')), bodyParser());
+app.use(compression(), express.static(path.resolve(__dirname,'../public')), bodyParser.json(), bodyParser.urlencoded({
+    extended:true
+}));
 app.get("/logout", function(req, res){
     console.log("in logout call");
     sessions.destroy(req, res);
@@ -41,8 +47,10 @@ app.post("/getPosts", function(req, res){
     console.log("in postsGet call");
     posts.getPosts(req, res);
 });
-app.post("/addPost", function(req, res){
+app.post("/addPost", upload.single('file'), function(req, res){
     console.log("in addPost call");
+    console.log(req.body);
+    console.log(req.file)
     posts.addPost(req, res);
 });
 app.post("/deletePost", function(req, res){

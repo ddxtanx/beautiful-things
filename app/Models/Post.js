@@ -12,7 +12,8 @@ var postSchema = new schema({
     userWhoAdded: String,
     userIdWhoAdded: Number,
     postId: Number,
-    likes: [String]
+    likes: [String],
+    image: String
 }, {timestamps: true});
 var Post = mongoose.model('Post', postSchema);
 module.exports = Post;
